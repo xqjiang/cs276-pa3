@@ -24,13 +24,14 @@ public class CosineSimilarityScorer extends AScorer
 	}
 	
 	///////////////weights///////////////////////////
-    double urlweight = 2.0;
-    double titleweight  = 0.1;
+	
+	double urlweight = 1;
+    double titleweight  = 1;
     double bodyweight = 0.1;
     double headerweight = 0.3;
-    double anchorweight = 5.0;
+    double anchorweight = 2;
     
-    double smoothingBodyLength = 500;
+    double smoothingBodyLength = 600;
     //////////////////////////////////////////
 	
 	public double getNetScore(Map<String,Map<String, Double>> tfs, Query q, Map<String,Double> tfQuery,Document d)
@@ -85,7 +86,6 @@ public class CosineSimilarityScorer extends AScorer
 			} else {
 				new_map.put(word, Math.log(count * 1));//98998
 			}
-			
 		}
 		return new_map;
 	}
@@ -128,9 +128,11 @@ public class CosineSimilarityScorer extends AScorer
 		
 		Map<String,Map<String, Double>> tfs = this.getDocTermFreqs(d,q);
 		this.normalizeTFs(tfs, d, q);
+		
 		Map<String,Double> tfQuery = getQueryFreqs(q);
 		tfQuery = toSublinear(tfQuery);
 		tfQuery = multipleIDFS(tfQuery);
+		
         return getNetScore(tfs,q,tfQuery,d);
 	}
 
